@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 네이스페이스의 기준은 패키지의 기준이다. = DAO를 설정해주는게 좋다. -->
+<mapper namespace="woo.siksin.mybatis.dao">
+
+<select id="selectAll" resultType="SiksinDTO">
+select memberNum, memberName, nickName,  password , to_char(memberBirth, 'yyyy-mm-dd')memberBirth , 
+gender, phoneNum, memberArea from siksin
+</select>
+
+<insert id="insert" parameterType="SiksinDTO">
+insert into siksin (memberNum,  memberName, nickName, password, memberBirth, gender, phoneNum, memberArea)
+values(siksin_seq.nextval, #{memberName}, #{nickName}, #{password}, to_date(#{memberBirth}, 'yyyy-mm-dd'), #{gender}, #{phoneNum}, #{memberArea})
+</insert>
+
+<update id="update" parameterType="SiksinDTO">
+update siksin set password = #{password} , nickName = #{nickName},  phoneNum = #{phoneNum} , memberArea = #{memberArea} 
+where  memberNum = #{memberNum}
+</update>
+
+<delete id="delete">
+delete from siksin where  memberNum = #{memberNum}
+</delete>
+
+<select id="selectDetail" parameterType="int" resultType="SiksinDTO">
+select memberNum, memberName, nickName, password , to_char(memberBirth, 'yyyy-mm-dd') memberBirth , 
+gender, phoneNum, memberArea from siksin
+where memberNum = #{memberNum}
+</select>
+
+<select id="login" parameterType="String" resultType="SiksinDTO">
+select * from siksin
+where phoneNum = #{phoneNum} and password = #{password}
+</select>
+
+
+</mapper>
